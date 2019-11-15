@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userServiceImpl" class="com.java.doop.service.impl.UserServiceImpl"/>
+    <bean id="orderServiceImpl" class="com.java.doop.service.impl.OrderServiceImpl"/>
+
+    <!--定义两个 advice-->
+    <bean id="logArgsAdvice" class="com.java.doop.aop_spring_1_2.LogArgsAdvice"/>
+    <bean id="logResultAdvice" class="com.java.doop.aop_spring_1_2.LogResultAdvice"/>
+
+    <!--定义一个只拦截queryUser方法的 advisor-->
+    <bean id="logCreateAdvisor" class="org.springframework.aop.support.NameMatchMethodPointcutAdvisor">
+        <!--advisor 实例的内部会有一个 advice-->
+        <property name="advice" ref="logArgsAdvice" />
+        <!--只有下面这两个方法才会被拦截-->
+        <property name="mappedNames" value="createUser,createOrder" />
+    </bean>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <property name="interceptorNames">
+            <list>
+                <!--<value>logArgsAdvice</value>-->
+                <!--<value>logResultAdvice</value>-->
+                <value>logCreateAdvisor</value>
+            </list>
+        </property>
+        <property name="beanNames" value="*ServiceImpl" />
+    </bean>
+
+
+</beans>

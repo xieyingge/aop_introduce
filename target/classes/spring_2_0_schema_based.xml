@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="userServiceImpl" class="com.java.doop.service.impl.UserServiceImpl"/>
+    <bean id="orderServiceImpl" class="com.java.doop.service.impl.OrderServiceImpl"/>
+
+    <bean id="logArgsAspect" class="com.java.doop.aop_spring_2_schema_based.LogArgsAspect"/>
+    <bean class="com.java.doop.aop_spring_2_schema_based.LogResultAspect" />
+
+
+    <aop:config>
+        <aop:pointcut id="logArgsPointcut" expression="execution(* com.java.doop.service.*.*(..))"/>
+        <aop:aspect ref="logArgsAspect">
+            <aop:before method="logArgs" pointcut-ref="logArgsPointcut"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>
